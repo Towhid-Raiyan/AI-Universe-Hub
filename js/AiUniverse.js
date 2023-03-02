@@ -40,7 +40,9 @@ const displayAiUniverse = (tools, dataLimit) =>{
                          <p><i class="fa-solid fa-calendar-days"></i> ${tool.published_in}</p>
                     </div>
                     <div>
-                        <i class="fa-regular fa-circle-right fa-2x text-danger"></i>
+                        <button class="border border-none rounded-circle" onclick="loodToolDetail('${tool.id}')" href ="#" data-bs-toggle="modal" data-bs-target="#toolDetailModal">
+                            <i class="fa-regular fa-circle-right fa-2x text-danger"></i>
+                        </button>
                      </div>
                 </div>
             </div>
@@ -49,9 +51,23 @@ const displayAiUniverse = (tools, dataLimit) =>{
        toolsContainer.appendChild(toolDiv);
     });
 }
+const loodToolDetail = id => {
+    const url = `https://openapi.programming-hero.com/api/ai/tool/${id}`;
+    fetch(url)
+    .then(res=>res.json())
+    .then(data=> displayToolDetail(data.data))
+}
+
+const displayToolDetail = tool =>{
+    const toolDescription = document.getElementById('description');
+    toolDescription.innerText = tool.description;
+    // const toolImage = document.getElementById('tool-image');
+    // toolImage.innerText = mk;
+}
 
 document.getElementById('btn-see-more').addEventListener('click',function(){
     loadAiUniverse();
 })
+
 
 loadAiUniverse(6);
