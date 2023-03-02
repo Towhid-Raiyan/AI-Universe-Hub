@@ -24,7 +24,15 @@ const displayAiUniverse = tools =>{
             </div>
             
             <div class="card-footer">
-                
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="card-title">${tool.name}</h5>
+                         <p><i class="fa-solid fa-calendar-days"></i> ${tool.published_in}</p>
+                    </div>
+                    <div>
+                        <i class="fa-regular fa-circle-right fa-2x text-danger"></i>
+                     </div>
+                </div>
             </div>
         </div>
        `
