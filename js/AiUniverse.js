@@ -14,7 +14,14 @@ const displayAiUniverse = tools =>{
        toolDiv.innerHTML =`
         <div class="card h-100 p-3">
             <img src="${tool.image}" height="300px" class="card-img-top" alt="...">
-            
+            <div class="card-body">
+                <h5 class="card-title">Features</h5>
+                <ol>
+                    <li>${tool.features[0]}</li>
+                    <li>${tool.features[1]}</li>
+                    <li>${tool.features[2]}</li>
+                </ol>
+            </div>
             
             <div class="card-footer">
                 
