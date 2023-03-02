@@ -1,12 +1,22 @@
-const loadAiUniverse = () => {
+const loadAiUniverse = (dataLimit) => {
     const url = `https://openapi.programming-hero.com/api/ai/tools`;
     fetch(url)
     .then(res=>res.json())
-    .then(data=> displayAiUniverse(data.data.tools));
+    .then(data=> displayAiUniverse(data.data.tools , dataLimit));
 }
 
-const displayAiUniverse = tools =>{
+const displayAiUniverse = (tools, dataLimit) =>{
     const toolsContainer = document.getElementById('tools-container');
+    toolsContainer.textContent = '';
+    // display first 6 tools
+    const seeMore = document.getElementById('see-more');
+    if(dataLimit && tools.length > 6){
+        tools = tools.slice(0,6);
+        seeMore.classList.remove('d-none');
+    }
+    else{
+        seeMore.classList.add('d-none');
+    }
     tools.forEach(tool => {
         console.log(tool);
        const toolDiv= document.createElement('div');
@@ -40,4 +50,8 @@ const displayAiUniverse = tools =>{
     });
 }
 
-loadAiUniverse()
+document.getElementById('btn-see-more').addEventListener('click',function(){
+    loadAiUniverse();
+})
+
+loadAiUniverse(6);
