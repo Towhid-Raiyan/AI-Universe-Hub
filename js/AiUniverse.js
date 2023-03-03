@@ -50,6 +50,8 @@ const displayAiUniverse = (tools, dataLimit) => {
        `
         toolsContainer.appendChild(toolDiv);
     });
+    // stop spinner 
+    toogleSpinner(false);
 }
 const loodToolDetail = id => {
     const url = `https://openapi.programming-hero.com/api/ai/tool/${id}`;
@@ -124,8 +126,19 @@ const displayToolDetail = tool => {
 }
 
 document.getElementById('btn-see-more').addEventListener('click', function () {
+    toogleSpinner(true);
     loadAiUniverse();
 })
+
+const toogleSpinner = isLoading => {
+    const spinnerSection = document.getElementById('spinner');
+    if(isLoading){
+        spinnerSection.classList.remove('d-none');
+    }
+    else{
+        spinnerSection.classList.add('d-none')
+    }
+}
 
 
 loadAiUniverse(6);
