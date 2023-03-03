@@ -60,6 +60,7 @@ const loodToolDetail = id => {
 
 const displayToolDetail = tool => {
     console.log(tool);
+    // modal left side card
     const toolDescription = document.getElementById('description');
     toolDescription.innerText = tool.description;
     const basicPrice = document.getElementById('basic-price');
@@ -68,7 +69,44 @@ const displayToolDetail = tool => {
     proPrice.innerText = tool.pricing[1].price == '' || tool.pricing[1].price == '0' || tool.pricing[1].price == 'No cost' ? 'Free of cost /' : tool.pricing[1].price;
     const enterprisePrice = document.getElementById('enterprise-price');
     enterprisePrice.innerText = tool.pricing[2].price == '' || tool.pricing[2].price == '0' || tool.pricing[2].price == 'No cost' ? 'Free of cost /' : tool.pricing[2].price;;
+    // Modal Features
+    const ModalFeaturesContainer = document.getElementById('modal-features-container');
+    ModalFeaturesContainer.innerText='';
+    const featureTitle = document.createElement('h5');
+    featureTitle.innerText = 'Features';
+    ModalFeaturesContainer.appendChild(featureTitle);
+    const feature = Object.values(tool.features);
+    console.log(feature);
+    feature.forEach(featureName =>{
+        const Modalfeatures = document.createElement('div');
+        Modalfeatures.classList.add('col');
+        Modalfeatures.innerHTML =`
+        <ul>
+            <li>${featureName.feature_name}</li>
+        </ul>
+        `
+        ModalFeaturesContainer.appendChild(Modalfeatures);
+    })
+   
+    // Modal Integrations
+    const ModalIntegrationsContainer = document.getElementById('modal-integrations-container');
+    ModalIntegrationsContainer.innerText='';
+    const integrationTitle = document.createElement('h5');
+    integrationTitle.innerText = 'Integration';
+    ModalIntegrationsContainer.appendChild(integrationTitle);
+    const integration = tool.integrations;
+    integration.forEach(integrationName =>{
+        const ModalIntegrations = document.createElement('div');
+        ModalIntegrations.classList.add('col');
+        ModalIntegrations.innerHTML =`
+        <ul>
+            <li>${integrationName}</li>
+        </ul>
+        `
+        ModalIntegrationsContainer.appendChild(ModalIntegrations);
+    })
 
+    // Modal right side card
     const rightSideContainer = document.getElementById('right-side-container');
     rightSideContainer.textContent = '';
     const rightSideCard = document.createElement('div');
