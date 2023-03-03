@@ -18,7 +18,7 @@ const displayAiUniverse = (tools, dataLimit) =>{
         seeMore.classList.add('d-none');
     }
     tools.forEach(tool => {
-        console.log(tool);
+        // console.log(tool);
        const toolDiv= document.createElement('div');
        toolDiv.classList.add('col');
        toolDiv.innerHTML =`
@@ -59,8 +59,15 @@ const loodToolDetail = id => {
 }
 
 const displayToolDetail = tool =>{
+    console.log(tool);
     const toolDescription = document.getElementById('description');
     toolDescription.innerText = tool.description;
+    const basicPrice = document.getElementById('basic-price');
+    basicPrice.innerText = tool.pricing[0].price;
+    const proPrice = document.getElementById('pro-price');
+    proPrice.innerText = tool.pricing[1].price;
+    const enterprisePrice = document.getElementById('enterprise-price');
+    enterprisePrice.innerText = tool.pricing[2].price;
     // const toolImage = document.getElementById('tool-image');
     // toolImage.innerText = mk;
 }
