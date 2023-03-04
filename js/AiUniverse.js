@@ -9,6 +9,7 @@ const displayAiUniverse = (tools, dataLimit) => {
     console.log(tools);
     const toolsContainer = document.getElementById('tools-container');
     toolsContainer.textContent = '';
+    
     // display first 6 tools
     const seeMore = document.getElementById('see-more');
     if (dataLimit && tools.length > 6) {
@@ -20,6 +21,7 @@ const displayAiUniverse = (tools, dataLimit) => {
     }
     tools.forEach(tool => {
         // console.log(tool);
+        const items = tool.features;
         const toolDiv = document.createElement('div');
         toolDiv.classList.add('col');
         toolDiv.innerHTML = `
@@ -28,9 +30,7 @@ const displayAiUniverse = (tools, dataLimit) => {
             <div class="card-body">
                 <h5 class="card-title">Features</h5>
                 <ol>
-                    <li>${tool.features[0]}</li>
-                    <li>${tool.features[1]}</li>
-                    <li>${tool.features[2]}</li>
+                    ${items.map(item => `<li>${item}</li>`).join("")}             
                 </ol>
             </div>
             
@@ -62,14 +62,14 @@ const loodToolDetail = id => {
 }
 
 const displayToolDetail = tool => {
-    console.log(tool);
+    
     // modal left side card
     const toolDescription = document.getElementById('description');
     toolDescription.innerText = tool.description;
     const basicPrice = document.getElementById('basic-price');
     const proPrice = document.getElementById('pro-price');
     const enterprisePrice = document.getElementById('enterprise-price');
-    if(tool.pricing !== 'null'){
+    if(tool.pricing !== null){
         basicPrice.innerText = tool.pricing[0].price == '' || tool.pricing[0].price == '0' || tool.pricing[0].price == 'No cost' ? 'Free of cost /' : tool.pricing[0].price;
         proPrice.innerText = tool.pricing[1].price == '' || tool.pricing[1].price == '0' || tool.pricing[1].price == 'No cost' ? 'Free of cost /' : tool.pricing[1].price;
         enterprisePrice.innerText = tool.pricing[2].price == '' || tool.pricing[2].price == '0' || tool.pricing[2].price == 'No cost' ? 'Free of cost /' : tool.pricing[2].price;
@@ -86,7 +86,6 @@ const displayToolDetail = tool => {
     featureTitle.innerText = 'Features';
     ModalFeaturesContainer.appendChild(featureTitle);
     const feature = Object.values(tool.features);
-    console.log(feature);
     feature.forEach(featureName =>{
         const Modalfeatures = document.createElement('div');
         Modalfeatures.classList.add('col');
@@ -104,26 +103,57 @@ const displayToolDetail = tool => {
     const integrationTitle = document.createElement('h5');
     integrationTitle.innerText = 'Integration';
     ModalIntegrationsContainer.appendChild(integrationTitle);
-    const integration = tool.integrations;
-    integration.forEach(integrationName =>{
+    const integrations = tool.integrations;
+    
+    if(integrations == null){
         const ModalIntegrations = document.createElement('div');
         ModalIntegrations.classList.add('col');
-        ModalIntegrations.innerHTML =`
-        <ul>
-            <li>${integrationName}</li>
-        </ul>
-        `
+        ModalIntegrations.innerHTML = `
+            <ul>
+                <li>Data Not Found</li>
+            </ul>
+        `;
         ModalIntegrationsContainer.appendChild(ModalIntegrations);
-    })
-
+    }
+    else{
+        integrations.forEach(integration =>{
+            const ModalIntegrations = document.createElement('div');
+            ModalIntegrations.classList.add('col');
+            //console.log(integration);
+            ModalIntegrations.innerHTML =`
+            <ul>
+                <li>${integration}</li>
+            </ul>
+            `
+            ModalIntegrationsContainer.appendChild(ModalIntegrations);
+        })
+    }
     // Modal right side card
     const rightSideContainer = document.getElementById('right-side-container');
     rightSideContainer.textContent = '';
+    // console.log(tool.image_link);
     const rightSideCard = document.createElement('div');
     rightSideCard.classList.add('col');
-    console.log(tool.accuracy.score);
-    // top-0 end-0
-    rightSideCard.innerHTML = `
+    console.log(tool.input_output_examples);
+    if(tool.accuracy.score === null){
+        rightSideCard.innerHTML = `
+        <div class="p-3">
+            <div class="position-relative">
+               <img id="tool-image" src="${tool.image_link[0]}" class="card-img-top" alt="...">
+            </div>
+                <div >
+                    
+                </div>  
+            <div class="card-body">
+                <h5 class="card-title text-center">${tool.input_output_examples == null ? "No data Found" : tool.input_output_examples[0].input}</h5>
+                <p class="card-text text-center">${tool.input_output_examples == null ? "No data Found" : tool.input_output_examples[0].output}</p>
+            </div>
+        </div>
+    `
+    rightSideContainer.appendChild(rightSideCard);
+    }
+    else{
+        rightSideCard.innerHTML = `
         <div class="p-3">
             <div class="position-relative">
                <img id="tool-image" src="${tool.image_link[0]}" class="card-img-top" alt="...">
@@ -132,12 +162,14 @@ const displayToolDetail = tool => {
                     <h5 class="position-absolute top-0 end-0 bg-danger rounded fw-bold text-light p-1">${tool.accuracy.score * 100} % accuracy</h5>
                 </div>  
             <div class="card-body">
-                <h5 class="card-title text-center">${tool.input_output_examples[0].input}</h5>
-                <p class="card-text text-center">${tool.input_output_examples[0].output ? tool.input_output_examples[0].output : 'NO! Not Yet! Take a break!!!'}</p>
+                <h5 class="card-title text-center">${tool.input_output_examples == null ? "No data Found" : tool.input_output_examples[0].input}</h5>
+                <p class="card-text text-center">${tool.input_output_examples == null ? "No data Found" : tool.input_output_examples[0].output}</p>
             </div>
         </div>
     `
     rightSideContainer.appendChild(rightSideCard);
+    }
+    
 }
 
 document.getElementById('btn-see-more').addEventListener('click', function () {
