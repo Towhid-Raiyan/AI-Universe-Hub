@@ -6,6 +6,7 @@ const loadAiUniverse = (dataLimit) => {
 }
 
 const displayAiUniverse = (tools, dataLimit) => {
+    console.log(tools);
     const toolsContainer = document.getElementById('tools-container');
     toolsContainer.textContent = '';
     // display first 6 tools
@@ -66,11 +67,18 @@ const displayToolDetail = tool => {
     const toolDescription = document.getElementById('description');
     toolDescription.innerText = tool.description;
     const basicPrice = document.getElementById('basic-price');
-    basicPrice.innerText = tool.pricing[0].price == '' || tool.pricing[0].price == '0' || tool.pricing[0].price == 'No cost' ? 'Free of cost /' : tool.pricing[0].price;
     const proPrice = document.getElementById('pro-price');
-    proPrice.innerText = tool.pricing[1].price == '' || tool.pricing[1].price == '0' || tool.pricing[1].price == 'No cost' ? 'Free of cost /' : tool.pricing[1].price;
     const enterprisePrice = document.getElementById('enterprise-price');
-    enterprisePrice.innerText = tool.pricing[2].price == '' || tool.pricing[2].price == '0' || tool.pricing[2].price == 'No cost' ? 'Free of cost /' : tool.pricing[2].price;;
+    if(tool.pricing !== 'null'){
+        basicPrice.innerText = tool.pricing[0].price == '' || tool.pricing[0].price == '0' || tool.pricing[0].price == 'No cost' ? 'Free of cost /' : tool.pricing[0].price;
+        proPrice.innerText = tool.pricing[1].price == '' || tool.pricing[1].price == '0' || tool.pricing[1].price == 'No cost' ? 'Free of cost /' : tool.pricing[1].price;
+        enterprisePrice.innerText = tool.pricing[2].price == '' || tool.pricing[2].price == '0' || tool.pricing[2].price == 'No cost' ? 'Free of cost /' : tool.pricing[2].price;
+    }
+    else{
+        basicPrice.innerText = 'No data Found';
+        proPrice.innerText = 'No data Found';
+        enterprisePrice.innerText = 'No data Found' ;
+    }
     // Modal Features
     const ModalFeaturesContainer = document.getElementById('modal-features-container');
     ModalFeaturesContainer.innerText='';
@@ -113,9 +121,16 @@ const displayToolDetail = tool => {
     rightSideContainer.textContent = '';
     const rightSideCard = document.createElement('div');
     rightSideCard.classList.add('col');
+    console.log(tool.accuracy.score);
+    // top-0 end-0
     rightSideCard.innerHTML = `
-        <div class="card h-100 p-3">
-            <img id="tool-image" src="${tool.image_link[0]}" class="card-img-top" alt="...">
+        <div class="p-3">
+            <div class="position-relative">
+               <img id="tool-image" src="${tool.image_link[0]}" class="card-img-top" alt="...">
+            </div>
+                <div >
+                    <h5 class="position-absolute top-0 end-0 bg-danger rounded fw-bold text-light p-1">${tool.accuracy.score * 100} % accuracy</h5>
+                </div>  
             <div class="card-body">
                 <h5 class="card-title text-center">${tool.input_output_examples[0].input}</h5>
                 <p class="card-text text-center">${tool.input_output_examples[0].output ? tool.input_output_examples[0].output : 'NO! Not Yet! Take a break!!!'}</p>
@@ -126,6 +141,7 @@ const displayToolDetail = tool => {
 }
 
 document.getElementById('btn-see-more').addEventListener('click', function () {
+    //spinner start
     toogleSpinner(true);
     loadAiUniverse();
 })
